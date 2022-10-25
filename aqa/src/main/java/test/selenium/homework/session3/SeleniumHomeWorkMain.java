@@ -47,11 +47,11 @@ public class SeleniumHomeWorkMain {
         Thread.sleep(5000);
     }
 
-    private static void quitDriver() throws InterruptedException {
+    private static void quitDriver() {
         driver.quit();
     }
 
-    private static void switchToLoginIframe() throws InterruptedException {
+    private static void switchToLoginIframe() {
         WebElement loginIframe = driver.findElement(By.xpath("//*[@id='login-frame-wraper']/iframe"));
         driver.switchTo().frame(loginIframe);
     }
