@@ -1,11 +1,13 @@
 package org.prog;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.prog.web.pageobjects.GooglePage;
-import org.prog.web.pageobjects.UkrNetPage;
 
 import java.util.stream.Stream;
 
@@ -23,7 +25,7 @@ public class GoogleTests extends BaseTest {
 
     @BeforeEach
     public void preTest() {
-        loadGooglePage();
+        googlePage.loadPage();
         googlePage.acceptCookies();
     }
 
@@ -37,8 +39,10 @@ public class GoogleTests extends BaseTest {
     public void googleSearchCovidTest(String searchValue, String searchResultValue, String headerValue) {
         googlePage.setSearchValue(searchValue);
         googlePage.performSearch(false);
+
         Assertions.assertTrue(googlePage.getSearchResults().contains(searchResultValue),
                 "search results did not contain expected text");
+
         if (headerValue != null) {
             Assertions.assertEquals(googlePage.getHeaderText(), headerValue);
         }
@@ -50,44 +54,5 @@ public class GoogleTests extends BaseTest {
                 Arguments.of("test", EXPECTED_COVID_TEXT, null),
                 Arguments.of("Musk", EXPECTED_MUSK_TEXT, "Elon Musk")
         );
-    }
-
-//    @Test
-//    public void googleSearchMuskTest() {
-//        googlePage.setSearchValue("Musk");
-//        googlePage.performSearch(false);
-//        Assertions.assertTrue(googlePage.getSearchResults().contains(EXPECTED_MUSK_TEXT),
-//                "search results did not contain expected text");
-//
-//    }
-
-    // null user name && null pwd
-    // null pwd
-    // null user name
-    // not null name && pwd
-
-//    @Test
-    public void mailTest(String userName, String userPassword) {
-        UkrNetPage ukrNetPage = new UkrNetPage();
-        ukrNetPage.setUserName(userName);
-        ukrNetPage.setPwd(userPassword);
-
-        if (userName == null) {
-            Assertions.assertTrue(ukrNetPage.getUserNameFieldError());
-        } else {
-            Assertions.assertFalse(ukrNetPage.getUserNameFieldError());
-        }
-
-        if (userPassword == null) {
-            Assertions.assertTrue(ukrNetPage.getPwdFieldError());
-        } else {
-            Assertions.assertFalse(ukrNetPage.getPwdFieldError());
-        }
-    }
-
-    private void loadGooglePage() {
-        driver.get("about::blank");
-        driver.get("https://google.com/");
-        driver.manage().window().maximize();
     }
 }

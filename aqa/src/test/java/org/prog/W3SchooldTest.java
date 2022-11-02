@@ -2,7 +2,6 @@ package org.prog;
 
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebElement;
 
 public class W3SchooldTest extends BaseTest {
@@ -16,9 +15,6 @@ public class W3SchooldTest extends BaseTest {
         System.out.println(driver.findElement(By.xpath("//h1")).getText());
 
         driver.switchTo().defaultContent();
-        System.out.println(iFrame.isDisplayed());
-        SearchContext searchContext = iFrame.getShadowRoot();
-        searchContext.findElements(By.xpath("//div"));
     }
 
     private static void loadIframePage() {
