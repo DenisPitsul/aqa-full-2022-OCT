@@ -1,50 +1,69 @@
 package org.prog.web.pageobjects.homework.session4;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.prog.web.pageobjects.homework.session4.modules.RozetkaHeaderModule;
+import org.prog.web.pageobjects.homework.session4.modules.RozetkaSearchResultsModule;
+import org.prog.web.pageobjects.homework.session4.modules.RozetkaSideMenuModule;
 
-import java.time.Duration;
+public class RozetkaPage extends AbstractPage {
 
-public class RozetkaPage {
+    private final static String URL = "https://rozetka.com.ua/";
 
-    private WebDriver driver;
-    private WebDriverWait wait;
-
-    private By searchInput = By.xpath("//input[@name='search']");
-
-    private By searchResultElements = By.xpath("//span[@class='goods-tile__title']");
-
-    private By sideMenuButton = By.xpath("//rz-mobile-user-menu/button");
+    private RozetkaHeaderModule rozetkaHeaderModule;
+    private RozetkaSearchResultsModule rozetkaSearchResultsModule;
+    private RozetkaSideMenuModule rozetkaSideMenuModule;
 
     public RozetkaPage(WebDriver driver) {
-        this.driver = driver;
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(searchInput));
+        super(driver, URL);
+        rozetkaHeaderModule = new RozetkaHeaderModule(driver);
+        rozetkaSearchResultsModule = new RozetkaSearchResultsModule(driver);
+        rozetkaSideMenuModule = new RozetkaSideMenuModule(driver);
     }
 
-    public void performSearch(String text) {
-        driver.findElement(searchInput).sendKeys(text);
-        driver.findElement(searchInput).sendKeys(Keys.RETURN);
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+    public RozetkaPage performSearch(String text) {
+        rozetkaHeaderModule.performSearch(text);
+        return this;
     }
 
     public boolean isSearchResultsContainsKeyword(String keyword) {
-        return driver.findElements(searchResultElements)
-                .stream()
-                .map(WebElement::getText)
-                .allMatch(searchResultText -> searchResultText.contains(keyword));
+        return rozetkaSearchResultsModule.isSearchResultsContainsKeyword(keyword);
     }
 
-    public RozetkaSideMenuPage openRozetkaSideMenu() {
-        driver.findElement(sideMenuButton).click();
-        return new RozetkaSideMenuPage(driver);
+    public RozetkaPage openRozetkaSideMenu() {
+        rozetkaHeaderModule.clickSideMenuButton();
+        return this;
+    }
+
+    public String getCurrentCity() {
+        if (!rozetkaSideMenuModule.isModuleOpened())
+            openRozetkaSideMenu();
+        return rozetkaSideMenuModule.getCurrentCity();
+    }
+
+    public RozetkaSelectCityPopupPage openSelectCityPopupPage() {
+        if (!rozetkaSideMenuModule.isModuleOpened())
+            openRozetkaSideMenu();
+        rozetkaSideMenuModule.clickCurrentCityButton();
+        return new RozetkaSelectCityPopupPage(driver);
+    }
+
+    public String getFirstSearchResultsGoodsName() {
+        return rozetkaSearchResultsModule.getFirstSearchResultsGoodsName();
+    }
+
+    public void addFirstSearchResultsGoodsToBasket() {
+        rozetkaSearchResultsModule.addFirstSearchResultsGoodsToBasket();
+    }
+
+    public RozetkaBasketPopupPage openBasketPopupPageFromSideHeader() {
+        rozetkaHeaderModule.clickBasketButton();
+        return new RozetkaBasketPopupPage(driver);
+    }
+
+    public RozetkaBasketPopupPage openBasketPopupPageFromSideMenu() {
+        if (!rozetkaSideMenuModule.isModuleOpened())
+            openRozetkaSideMenu();
+        rozetkaSideMenuModule.clickBasketButton();
+        return new RozetkaBasketPopupPage(driver);
     }
 }
