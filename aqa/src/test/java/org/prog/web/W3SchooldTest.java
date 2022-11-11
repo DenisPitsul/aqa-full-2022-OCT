@@ -1,11 +1,11 @@
-package org.prog;
+package org.prog.web;
 
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 public class W3SchooldTest extends BaseTest {
-    @Test
+//    @Test
     public void iFrameTest() {
         loadIframePage();
 

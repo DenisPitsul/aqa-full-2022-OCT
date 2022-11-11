@@ -1,7 +1,6 @@
-package org.prog;
+package org.prog.web;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,8 +24,8 @@ public class GoogleTests extends BaseTest {
 
     @BeforeEach
     public void preTest() {
-        googlePage.loadPage();
-        googlePage.acceptCookies();
+//        googlePage.loadPage();
+//        googlePage.acceptCookies();
     }
 
     @AfterEach
@@ -37,15 +36,15 @@ public class GoogleTests extends BaseTest {
     @ParameterizedTest
     @MethodSource("googleSearchProvider")
     public void googleSearchCovidTest(String searchValue, String searchResultValue, String headerValue) {
-        googlePage.setSearchValue(searchValue);
-        googlePage.performSearch(false);
-
-        Assertions.assertTrue(googlePage.getSearchResults().contains(searchResultValue),
-                "search results did not contain expected text");
-
-        if (headerValue != null) {
-            Assertions.assertEquals(googlePage.getHeaderText(), headerValue);
-        }
+//        googlePage.setSearchValue(searchValue);
+//        googlePage.performSearch(false);
+//
+//        Assertions.assertTrue(googlePage.getSearchResults().contains(searchResultValue),
+//                "search results did not contain expected text");
+//
+//        if (headerValue != null) {
+//            Assertions.assertEquals(googlePage.getHeaderText(), headerValue);
+//        }
     }
 
     private static Stream<Arguments> googleSearchProvider() {

@@ -1,4 +1,4 @@
-package org.prog;
+package org.prog.web;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterAll;

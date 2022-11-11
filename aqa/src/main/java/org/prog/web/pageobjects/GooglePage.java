@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.prog.web.pageobjects.commons.AbstractPage;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,7 +15,7 @@ public class GooglePage extends AbstractPage {
     private final static String GOOGLE_SEARCH_BAR_NAME = "q";
     private final static String GOOGLE_SEARCH_RESULTS = "//div[@id='rso']/div//a/h3";
 
-    private final static String URL = "https://www.cloudflare.com/";
+    private final static String URL = "https://google.com/";
 
     public GooglePage(WebDriver driver) {
         super(driver, URL);
